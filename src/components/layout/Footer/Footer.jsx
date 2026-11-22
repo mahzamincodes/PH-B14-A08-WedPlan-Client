@@ -78,7 +78,6 @@ export default function Footer() {
 
 
 
-                    <h1>7</h1>
                     <h1>8</h1>
                     <h1>9</h1>
                     <h1>10</h1>
