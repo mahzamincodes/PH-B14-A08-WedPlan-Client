@@ -1,36 +1,187 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# WedPlan — Wedding Planning Platform
 
-## Getting Started
+WedPlan is a full-stack wedding planning platform that connects customers with wedding service providers. Customers can explore wedding services, discover vendors, and submit booking requests. Vendors can manage their services, handle booking requests, and upgrade their subscription plans. Admins can manage users, review services, and monitor platform transactions.
 
-First, run the development server:
+## Live Website
+
+[Visit WedPlan](YOUR_LIVE_WEBSITE_URL)
+
+## Project Repositories
+
+- **Client Repository:** [GitHub Repository](YOUR_CLIENT_GITHUB_REPOSITORY_URL)
+- **Server Repository:** [GitHub Repository](YOUR_SERVER_GITHUB_REPOSITORY_URL)
+
+## Key Features
+
+### Customer
+- Browse approved and active wedding services.
+- Search services by name.
+- Filter services by category and location.
+- Sort services by price (ascending and descending).
+- View service details, images, prices, and vendor information.
+- Submit wedding service booking requests.
+- Track booking request status.
+- Cancel pending booking requests.
+- Manage personal profile information.
+- Access a personalized customer dashboard.
+
+### Vendor
+- Create and manage wedding service listings.
+- Upload service images using ImgBB.
+- Update and delete personal services.
+- Manage service availability.
+- View service approval status.
+- View customer booking requests.
+- Accept or reject pending booking requests.
+- Access vendor dashboard statistics.
+- Upgrade to Premium using Stripe Checkout.
+- Free Plan: Publish up to 3 active services.
+- Premium Plan: Publish unlimited active services.
+- Display Premium vendor status.
+
+### Admin
+- View platform statistics.
+- Manage registered customers and vendors.
+- Search users and filter by role.
+- Block and unblock users.
+- Review submitted services.
+- Approve or reject services.
+- Change service availability.
+- Delete inappropriate services.
+- Monitor subscription transactions.
+
+### General Features
+- Email and password authentication.
+- Google authentication.
+- Role-based dashboard access.
+- Protected routes and authentication persistence.
+- Responsive design for desktop, tablet, and mobile.
+- Smooth animations using Motion.
+- Form validation and toast notifications.
+- Loading, empty, and error states.
+- Secure Stripe webhook-based Premium activation.
+
+## Technology Stack
+
+### Frontend
+- Next.js
+- React
+- JavaScript
+- Tailwind CSS
+- ShadCN UI
+- Better Auth
+- Motion
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- Stripe Checkout and Webhooks
+- ImgBB Image Hosting
+
+## Installation and Setup
+
+### Prerequisites
+- Node.js (LTS recommended)
+- npm
+- Git
+- MongoDB database
+- WedPlan backend server
+
+### 1. Clone the Client Repository
+
+```bash
+git clone YOUR_CLIENT_GITHUB_REPOSITORY_URL
+```
+
+### 2. Navigate to the Project Directory
+
+```bash
+cd wedplan-client
+```
+
+### 3. Install Dependencies
+
+```bash
+npm install
+```
+
+### 4. Configure Environment Variables
+
+Create a `.env.local` file in the project root.
+
+Configure the following Better Auth and Google OAuth variables using your own credentials:
+
+```env
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=
+NEXT_PUBLIC_BETTER_AUTH_URL=
+BETTER_AUTH_DB_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+**Important:** Use the exact values and URLs required by your local environment. Never commit `.env.local` or expose secret credentials.
+
+### 5. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 6. Build the Project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+### 7. Run the Production Build Locally
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Backend Environment Configuration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The WedPlan client requires the separate Express.js backend.
 
-## Deploy on Vercel
+The following variables are used for backend authentication, security, image hosting, and application configuration:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```env
+JWT_SECRET=
+JWT_ISSUER=
+JWT_AUDIENCE=
+JWT_TTL_SECONDS=
+CLIENT_ORIGIN=
+IMGBB_API_KEY=
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The backend also requires the appropriate MongoDB, Better Auth, Google OAuth, and Stripe configuration.
+
+For complete backend installation instructions and environment variable configuration, see the Server Repository README.
+
+## Security
+
+- Sensitive credentials are stored in environment variables.
+- Environment files are excluded from Git using `.gitignore`.
+- Protected pages require authentication.
+- Dashboard access is controlled by user roles.
+- Backend APIs verify authentication, authorization, and resource ownership.
+- Users cannot change their own role or subscription plan through profile updates.
+- Stripe Premium activation depends on verified webhook events.
+- Secret keys and credentials must never be exposed in client-side code or committed to GitHub.
+
+## Project Structure
+
+The project follows a component-based structure using Next.js App Router.
+
+- `src/app/` — Application routes and pages.
+- `src/components/` — Reusable UI components.
+- `src/lib/` — Shared utilities, authentication, and API-related logic.
+
+## Project Status
+
+WedPlan is developed as a full-stack wedding planning platform with separate customer, vendor, and admin experiences.
