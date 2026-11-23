@@ -4,12 +4,12 @@ WedPlan is a full-stack wedding planning platform that connects customers with w
 
 ## Live Website
 
-[Visit WedPlan](YOUR_LIVE_WEBSITE_URL)
+[Visit WedPlan](https://ph-b14-a08-wed-plan-client.vercel.app/)
 
 ## Project Repositories
 
-- **Client Repository:** [GitHub Repository](YOUR_CLIENT_GITHUB_REPOSITORY_URL)
-- **Server Repository:** [GitHub Repository](YOUR_SERVER_GITHUB_REPOSITORY_URL)
+- **Client Repository:** [GitHub Repository](https://github.com/mahzamincodes/PH-B14-A08-WedPlan-Client)
+- **Server Repository:** [GitHub Repository](https://github.com/mahzamincodes/PH-B14-A08-WedPlan-Server)
 
 ## Key Features
 
@@ -92,13 +92,13 @@ WedPlan is a full-stack wedding planning platform that connects customers with w
 ### 1. Clone the Client Repository
 
 ```bash
-git clone YOUR_CLIENT_GITHUB_REPOSITORY_URL
+git clone https://github.com/mahzamincodes/PH-B14-A08-WedPlan-Client.git
 ```
 
 ### 2. Navigate to the Project Directory
 
 ```bash
-cd wedplan-client
+cd PH-B14-A08-WedPlan-Client
 ```
 
 ### 3. Install Dependencies
@@ -148,6 +148,10 @@ npm start
 
 The WedPlan client requires the separate Express.js backend.
 
+**Production Backend API:** [https://ph-b14-a08-wed-plan-server.vercel.app](https://ph-b14-a08-wed-plan-server.vercel.app)
+
+**Local Backend API:** `http://localhost:5000`
+
 The following variables are used for backend authentication, security, image hosting, and application configuration:
 
 ```env
@@ -161,7 +165,7 @@ IMGBB_API_KEY=
 
 The backend also requires the appropriate MongoDB, Better Auth, Google OAuth, and Stripe configuration.
 
-For complete backend installation instructions and environment variable configuration, see the Server Repository README.
+For complete backend installation instructions and environment variable configuration, see the [Server Repository README](https://github.com/mahzamincodes/PH-B14-A08-WedPlan-Server).
 
 ## Security
 
