@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { authRoutes } from "@/components/layout/Navbar/navigation";
 import { useToast } from "@/components/ui/ToastProvider";
@@ -68,6 +69,7 @@ function PasswordToggle({ visible, onToggle, label }) {
 }
 
 export default function SignUpForm() {
+    const router = useRouter();
     const prefersReducedMotion = useReducedMotion();
     const { toast } = useToast();
 
@@ -97,7 +99,6 @@ export default function SignUpForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
-    const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         return () => {
@@ -227,6 +228,7 @@ export default function SignUpForm() {
         return isValid;
     };
 
+    // Create the account before uploading the optional profile image.
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -239,57 +241,85 @@ export default function SignUpForm() {
         setIsSubmitting(true);
 
         try {
-            let imageUrl = null;
+            // Step 1: Create the account.
+            const { error: signUpError } = await authClient.signUp.email({
+                email: formData.email.trim(),
+                password: formData.password,
+                name: formData.name.trim(),
+                role: formData.role,
+            });
+
+            if (signUpError) {
+                throw new Error(
+                    signUpError.message || "Unable to create your account.",
+                );
+            }
+
+            // Step 2: Upload the optional image after account creation.
+            let profileImageSaved = true;
 
             if (imageFile) {
                 setIsUploading(true);
 
-                const uploadFormData = new FormData();
-                uploadFormData.append("image", imageFile);
+                try {
+                    const uploadFormData = new FormData();
+                    uploadFormData.append("image", imageFile);
 
-                const uploadResponse = await fetch("/api/upload", {
-                    method: "POST",
-                    body: uploadFormData,
-                });
+                    const uploadResponse = await fetch("/api/upload", {
+                        method: "POST",
+                        credentials: "same-origin",
+                        body: uploadFormData,
+                    });
 
-                const uploadResult = await uploadResponse.json();
+                    const uploadResult = await uploadResponse.json();
 
-                if (!uploadResponse.ok || !uploadResult.imageUrl) {
-                    throw new Error(
-                        uploadResult.message ||
-                            "Profile image upload failed.",
+                    if (!uploadResponse.ok || !uploadResult.imageUrl) {
+                        throw new Error(
+                            uploadResult.message ||
+                                "Profile image upload failed.",
+                        );
+                    }
+
+                    // Step 3: Save the uploaded image to the user profile.
+                    const { error: updateError } =
+                        await authClient.updateUser({
+                            image: uploadResult.imageUrl,
+                        });
+
+                    if (updateError) {
+                        throw new Error(
+                            updateError.message ||
+                                "Unable to save profile image.",
+                        );
+                    }
+                } catch (uploadError) {
+                    profileImageSaved = false;
+
+                    console.error(
+                        "Profile image upload failed:",
+                        uploadError,
                     );
                 }
-
-                imageUrl = uploadResult.imageUrl;
             }
 
-            const { error } = await authClient.signUp.email({
-                email: formData.email.trim(),
-                password: formData.password,
-                name: formData.name.trim(),
-                ...(imageUrl ? { image: imageUrl } : {}),
-                role: formData.role,
-            });
-
-            if (error) {
-                throw new Error(
-                    error.message || "Unable to create your account.",
-                );
-            }
-
+            // Account creation is successful even if image upload fails.
             toast({
                 title: "Account created",
-                description: "Your WedPlan account has been created successfully.",
+                description: profileImageSaved
+                    ? "Your WedPlan account has been created successfully."
+                    : "Your account was created, but the profile image could not be saved. You can add it later from Profile Settings.",
                 variant: "success",
             });
 
-            setSuccess(true);
+            // Redirect to homepage after successful registration.
+            router.replace("/");
+            router.refresh();
         } catch (error) {
             toast({
                 title: "Registration failed",
                 description:
-                    error?.message || "Something went wrong. Please try again.",
+                    error?.message ||
+                    "Something went wrong. Please try again.",
                 variant: "error",
             });
         } finally {
@@ -321,6 +351,7 @@ export default function SignUpForm() {
                     error?.message || "Unable to sign up with Google.",
                 variant: "error",
             });
+
             setIsGoogleLoading(false);
         }
     };
@@ -396,499 +427,489 @@ export default function SignUpForm() {
                 {/* Sign Up Form */}
                 <section className="flex items-center justify-center px-6 py-12 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
                     <div className="w-full max-w-md">
-                        {success ? (
-                            <div className="space-y-6">
-                                <div>
-                                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-champagne">
-                                        Registration complete
-                                    </p>
+                        <div className="mb-8">
+                            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-champagne">
+                                Get started
+                            </p>
 
-                                    <h2 className="mt-3 font-display text-3xl text-ink sm:text-4xl">
-                                        Account created
-                                    </h2>
+                            <h2 className="mt-3 font-display text-3xl text-ink sm:text-4xl">
+                                Create your account
+                            </h2>
 
-                                    <p className="mt-3 text-base leading-7 text-ink-soft">
-                                        Your WedPlan account has been created
-                                        successfully and you are signed in.
+                            <p className="mt-3 text-base leading-7 text-ink-soft">
+                                Join WedPlan and start your wedding planning
+                                journey.
+                            </p>
+                        </div>
+
+                        <form
+                            onSubmit={handleSubmit}
+                            noValidate
+                            className="space-y-5"
+                        >
+                            {/* Full Name */}
+                            <div>
+                                <label
+                                    htmlFor="name"
+                                    className="mb-2 block text-base font-medium text-ink"
+                                >
+                                    Full name
+                                </label>
+
+                                <input
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    autoComplete="name"
+                                    placeholder="Your full name"
+                                    value={formData.name}
+                                    onChange={(event) =>
+                                        updateField("name", event.target.value)
+                                    }
+                                    disabled={isSubmitting || isGoogleLoading}
+                                    aria-invalid={Boolean(errors.name)}
+                                    aria-describedby={
+                                        errors.name ? "name-error" : undefined
+                                    }
+                                    className={inputClass(errors.name)}
+                                />
+
+                                {errors.name && (
+                                    <p
+                                        id="name-error"
+                                        role="alert"
+                                        className="mt-2 text-sm text-[#a4553f]"
+                                    >
+                                        {errors.name}
                                     </p>
+                                )}
+                            </div>
+
+                            {/* Email */}
+                            <div>
+                                <label
+                                    htmlFor="email"
+                                    className="mb-2 block text-base font-medium text-ink"
+                                >
+                                    Email address
+                                </label>
+
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    autoComplete="email"
+                                    placeholder="you@example.com"
+                                    value={formData.email}
+                                    onChange={(event) =>
+                                        updateField("email", event.target.value)
+                                    }
+                                    disabled={isSubmitting || isGoogleLoading}
+                                    aria-invalid={Boolean(errors.email)}
+                                    aria-describedby={
+                                        errors.email ? "email-error" : undefined
+                                    }
+                                    className={inputClass(errors.email)}
+                                />
+
+                                {errors.email && (
+                                    <p
+                                        id="email-error"
+                                        role="alert"
+                                        className="mt-2 text-sm text-[#a4553f]"
+                                    >
+                                        {errors.email}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Password */}
+                            <div>
+                                <label
+                                    htmlFor="password"
+                                    className="mb-2 block text-base font-medium text-ink"
+                                >
+                                    Password
+                                </label>
+
+                                <div className="relative">
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type={showPassword ? "text" : "password"}
+                                        autoComplete="new-password"
+                                        placeholder="Create a password"
+                                        value={formData.password}
+                                        onChange={(event) =>
+                                            updateField(
+                                                "password",
+                                                event.target.value,
+                                            )
+                                        }
+                                        disabled={
+                                            isSubmitting || isGoogleLoading
+                                        }
+                                        aria-invalid={Boolean(errors.password)}
+                                        aria-describedby={
+                                            errors.password
+                                                ? "password-error"
+                                                : undefined
+                                        }
+                                        className={`${inputClass(errors.password)} pr-12`}
+                                    />
+
+                                    <PasswordToggle
+                                        visible={showPassword}
+                                        onToggle={() =>
+                                            setShowPassword((prev) => !prev)
+                                        }
+                                        label="password"
+                                    />
                                 </div>
 
-                                <div className="border border-champagne/30 bg-champagne/5 px-4 py-4 text-sm leading-7 text-ink">
-                                    You can now return to the{" "}
-                                    <Link
-                                        href="/"
-                                        className="font-semibold text-ink underline decoration-champagne decoration-2 underline-offset-4 hover:text-champagne"
+                                {errors.password && (
+                                    <p
+                                        id="password-error"
+                                        role="alert"
+                                        className="mt-2 text-sm text-[#a4553f]"
                                     >
-                                        homepage
-                                    </Link>
-                                    .
+                                        {errors.password}
+                                    </p>
+                                )}
+
+                                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] uppercase tracking-widest text-ink-soft/70">
+                                    <span
+                                        className={
+                                            formData.password.length >= 6
+                                                ? "text-champagne"
+                                                : ""
+                                        }
+                                    >
+                                        6+ characters
+                                    </span>
+
+                                    <span
+                                        className={
+                                            /[A-Z]/.test(formData.password)
+                                                ? "text-champagne"
+                                                : ""
+                                        }
+                                    >
+                                        One uppercase
+                                    </span>
+
+                                    <span
+                                        className={
+                                            /[a-z]/.test(formData.password)
+                                                ? "text-champagne"
+                                                : ""
+                                        }
+                                    >
+                                        One lowercase
+                                    </span>
                                 </div>
                             </div>
-                        ) : (
-                            <>
-                                <div className="mb-8">
-                                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-champagne">
-                                        Get started
-                                    </p>
 
-                                    <h2 className="mt-3 font-display text-3xl text-ink sm:text-4xl">
-                                        Create your account
-                                    </h2>
+                            {/* Confirm Password */}
+                            <div>
+                                <label
+                                    htmlFor="confirm-password"
+                                    className="mb-2 block text-base font-medium text-ink"
+                                >
+                                    Confirm password
+                                </label>
 
-                                    <p className="mt-3 text-base leading-7 text-ink-soft">
-                                        Join WedPlan and start your wedding
-                                        planning journey.
-                                    </p>
+                                <div className="relative">
+                                    <input
+                                        id="confirm-password"
+                                        name="confirm-password"
+                                        type={
+                                            showConfirmPassword
+                                                ? "text"
+                                                : "password"
+                                        }
+                                        autoComplete="new-password"
+                                        placeholder="Confirm your password"
+                                        value={formData.confirmPassword}
+                                        onChange={(event) =>
+                                            updateField(
+                                                "confirmPassword",
+                                                event.target.value,
+                                            )
+                                        }
+                                        disabled={
+                                            isSubmitting || isGoogleLoading
+                                        }
+                                        aria-invalid={Boolean(
+                                            errors.confirmPassword,
+                                        )}
+                                        aria-describedby={
+                                            errors.confirmPassword
+                                                ? "confirm-password-error"
+                                                : undefined
+                                        }
+                                        className={`${inputClass(errors.confirmPassword)} pr-12`}
+                                    />
+
+                                    <PasswordToggle
+                                        visible={showConfirmPassword}
+                                        onToggle={() =>
+                                            setShowConfirmPassword(
+                                                (prev) => !prev,
+                                            )
+                                        }
+                                        label="confirm password"
+                                    />
                                 </div>
 
-                                <form
-                                    onSubmit={handleSubmit}
-                                    noValidate
-                                    className="space-y-5"
-                                >
-                                    {/* Full Name */}
-                                    <div>
-                                        <label
-                                            htmlFor="name"
-                                            className="mb-2 block text-base font-medium text-ink"
-                                        >
-                                            Full name
-                                        </label>
+                                {errors.confirmPassword && (
+                                    <p
+                                        id="confirm-password-error"
+                                        role="alert"
+                                        className="mt-2 text-sm text-[#a4553f]"
+                                    >
+                                        {errors.confirmPassword}
+                                    </p>
+                                )}
+                            </div>
 
-                                        <input
-                                            id="name"
-                                            name="name"
-                                            type="text"
-                                            autoComplete="name"
-                                            placeholder="Your full name"
-                                            value={formData.name}
-                                            onChange={(event) =>
-                                                updateField("name", event.target.value)
-                                            }
-                                            disabled={isSubmitting || isGoogleLoading}
-                                            aria-invalid={Boolean(errors.name)}
-                                            aria-describedby={
-                                                errors.name ? "name-error" : undefined
-                                            }
-                                            className={inputClass(errors.name)}
-                                        />
+                            {/* Account Type */}
+                            <div>
+                                <p className="mb-2 block text-base font-medium text-ink">
+                                    Account type
+                                </p>
 
-                                        {errors.name && (
-                                            <p
-                                                id="name-error"
-                                                role="alert"
-                                                className="mt-2 text-sm text-[#a4553f]"
-                                            >
-                                                {errors.name}
-                                            </p>
-                                        )}
-                                    </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {ROLES.map((role) => {
+                                        const selected =
+                                            formData.role === role.value;
 
-                                    {/* Email */}
-                                    <div>
-                                        <label
-                                            htmlFor="email"
-                                            className="mb-2 block text-base font-medium text-ink"
-                                        >
-                                            Email address
-                                        </label>
-
-                                        <input
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            autoComplete="email"
-                                            placeholder="you@example.com"
-                                            value={formData.email}
-                                            onChange={(event) =>
-                                                updateField("email", event.target.value)
-                                            }
-                                            disabled={isSubmitting || isGoogleLoading}
-                                            aria-invalid={Boolean(errors.email)}
-                                            aria-describedby={
-                                                errors.email ? "email-error" : undefined
-                                            }
-                                            className={inputClass(errors.email)}
-                                        />
-
-                                        {errors.email && (
-                                            <p
-                                                id="email-error"
-                                                role="alert"
-                                                className="mt-2 text-sm text-[#a4553f]"
-                                            >
-                                                {errors.email}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    {/* Password */}
-                                    <div>
-                                        <label
-                                            htmlFor="password"
-                                            className="mb-2 block text-base font-medium text-ink"
-                                        >
-                                            Password
-                                        </label>
-
-                                        <div className="relative">
-                                            <input
-                                                id="password"
-                                                name="password"
-                                                type={showPassword ? "text" : "password"}
-                                                autoComplete="new-password"
-                                                placeholder="Create a password"
-                                                value={formData.password}
-                                                onChange={(event) =>
-                                                    updateField("password", event.target.value)
-                                                }
-                                                disabled={isSubmitting || isGoogleLoading}
-                                                aria-invalid={Boolean(errors.password)}
-                                                aria-describedby={
-                                                    errors.password ? "password-error" : undefined
-                                                }
-                                                className={`${inputClass(errors.password)} pr-12`}
-                                            />
-
-                                            <PasswordToggle
-                                                visible={showPassword}
-                                                onToggle={() =>
-                                                    setShowPassword((prev) => !prev)
-                                                }
-                                                label="password"
-                                            />
-                                        </div>
-
-                                        {errors.password && (
-                                            <p
-                                                id="password-error"
-                                                role="alert"
-                                                className="mt-2 text-sm text-[#a4553f]"
-                                            >
-                                                {errors.password}
-                                            </p>
-                                        )}
-
-                                        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] uppercase tracking-widest text-ink-soft/70">
-                                            <span
-                                                className={
-                                                    formData.password.length >= 6
-                                                        ? "text-champagne"
-                                                        : ""
-                                                }
-                                            >
-                                                6+ characters
-                                            </span>
-
-                                            <span
-                                                className={
-                                                    /[A-Z]/.test(formData.password)
-                                                        ? "text-champagne"
-                                                        : ""
-                                                }
-                                            >
-                                                One uppercase
-                                            </span>
-
-                                            <span
-                                                className={
-                                                    /[a-z]/.test(formData.password)
-                                                        ? "text-champagne"
-                                                        : ""
-                                                }
-                                            >
-                                                One lowercase
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Confirm Password */}
-                                    <div>
-                                        <label
-                                            htmlFor="confirm-password"
-                                            className="mb-2 block text-base font-medium text-ink"
-                                        >
-                                            Confirm password
-                                        </label>
-
-                                        <div className="relative">
-                                            <input
-                                                id="confirm-password"
-                                                name="confirm-password"
-                                                type={
-                                                    showConfirmPassword
-                                                        ? "text"
-                                                        : "password"
-                                                }
-                                                autoComplete="new-password"
-                                                placeholder="Confirm your password"
-                                                value={formData.confirmPassword}
-                                                onChange={(event) =>
+                                        return (
+                                            <button
+                                                key={role.value}
+                                                type="button"
+                                                role="radio"
+                                                aria-checked={selected}
+                                                onClick={() =>
                                                     updateField(
-                                                        "confirmPassword",
-                                                        event.target.value,
+                                                        "role",
+                                                        role.value,
                                                     )
                                                 }
-                                                disabled={isSubmitting || isGoogleLoading}
-                                                aria-invalid={Boolean(
-                                                    errors.confirmPassword,
-                                                )}
-                                                aria-describedby={
-                                                    errors.confirmPassword
-                                                        ? "confirm-password-error"
-                                                        : undefined
+                                                disabled={
+                                                    isSubmitting ||
+                                                    isGoogleLoading
                                                 }
-                                                className={`${inputClass(errors.confirmPassword)} pr-12`}
-                                            />
-
-                                            <PasswordToggle
-                                                visible={showConfirmPassword}
-                                                onToggle={() =>
-                                                    setShowConfirmPassword((prev) => !prev)
-                                                }
-                                                label="confirm password"
-                                            />
-                                        </div>
-
-                                        {errors.confirmPassword && (
-                                            <p
-                                                id="confirm-password-error"
-                                                role="alert"
-                                                className="mt-2 text-sm text-[#a4553f]"
+                                                className={`border px-4 py-3.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne disabled:cursor-not-allowed disabled:opacity-60 ${
+                                                    selected
+                                                        ? "border-champagne bg-champagne/10 text-ink"
+                                                        : "border-hairline bg-ivory/40 text-ink-soft hover:border-champagne"
+                                                }`}
                                             >
-                                                {errors.confirmPassword}
-                                            </p>
-                                        )}
-                                    </div>
+                                                {role.label}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
 
-                                    {/* Account Type */}
-                                    <div>
-                                        <p className="mb-2 block text-base font-medium text-ink">
-                                            Account type
-                                        </p>
+                                {errors.role && (
+                                    <p
+                                        role="alert"
+                                        className="mt-2 text-sm text-[#a4553f]"
+                                    >
+                                        {errors.role}
+                                    </p>
+                                )}
+                            </div>
 
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {ROLES.map((role) => {
-                                                const selected =
-                                                    formData.role === role.value;
+                            {/* Profile Image */}
+                            <div>
+                                <label
+                                    htmlFor="profile-image"
+                                    className="mb-2 block text-base font-medium text-ink"
+                                >
+                                    Profile image{" "}
+                                    <span className="font-normal text-ink-soft">
+                                        (optional)
+                                    </span>
+                                </label>
 
-                                                return (
-                                                    <button
-                                                        key={role.value}
-                                                        type="button"
-                                                        role="radio"
-                                                        aria-checked={selected}
-                                                        onClick={() =>
-                                                            updateField("role", role.value)
-                                                        }
-                                                        disabled={isSubmitting || isGoogleLoading}
-                                                        className={`border px-4 py-3.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne disabled:cursor-not-allowed disabled:opacity-60 ${
-                                                            selected
-                                                                ? "border-champagne bg-champagne/10 text-ink"
-                                                                : "border-hairline bg-ivory/40 text-ink-soft hover:border-champagne"
-                                                        }`}
-                                                    >
-                                                        {role.label}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-
-                                        {errors.role && (
-                                            <p
-                                                role="alert"
-                                                className="mt-2 text-sm text-[#a4553f]"
-                                            >
-                                                {errors.role}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    {/* Profile Image */}
-                                    <div>
-                                        <label
-                                            htmlFor="profile-image"
-                                            className="mb-2 block text-base font-medium text-ink"
-                                        >
-                                            Profile image{" "}
-                                            <span className="font-normal text-ink-soft">
-                                                (optional)
-                                            </span>
-                                        </label>
-
-                                        <div className="border border-hairline bg-ivory/40 p-4">
-                                            <div className="flex items-center gap-4">
-                                                {imagePreview ? (
-                                                    <>
-                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                        <img
-                                                            src={imagePreview}
-                                                            alt="Profile preview"
-                                                            className="h-16 w-16 rounded-full border border-hairline object-cover"
-                                                        />
-                                                    </>
-                                                ) : (
-                                                    <div className="flex h-16 w-16 items-center justify-center rounded-full border border-hairline bg-white text-ink-soft">
-                                                        <svg
-                                                            aria-hidden="true"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            className="h-7 w-7"
-                                                            stroke="currentColor"
-                                                            strokeWidth="1.5"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                d="M20 21a8 8 0 0 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
-                                                            />
-                                                        </svg>
-                                                    </div>
-                                                )}
-
-                                                <div className="min-w-0 flex-1">
-                                                    <label
-                                                        htmlFor="profile-image"
-                                                        className="inline-flex cursor-pointer border border-hairline bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:border-champagne"
-                                                    >
-                                                        {imageFile ? "Change photo" : "Choose photo"}
-                                                    </label>
-
-                                                    <input
-                                                        id="profile-image"
-                                                        name="profile-image"
-                                                        type="file"
-                                                        accept="image/jpeg,image/jpg,image/png,image/webp"
-                                                        onChange={handleImageChange}
-                                                        disabled={isSubmitting || isGoogleLoading}
-                                                        className="sr-only"
-                                                    />
-
-                                                    <p className="mt-2 text-sm text-ink-soft">
-                                                        JPG, PNG or WebP · Max 5 MB
-                                                    </p>
-
-                                                    {imageFile && (
-                                                        <p className="mt-1 truncate text-xs text-ink">
-                                                            {imageFile.name}
-                                                        </p>
-                                                    )}
-                                                </div>
-
-                                                {imageFile && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={removeImage}
-                                                        disabled={isSubmitting || isGoogleLoading}
-                                                        className="text-xs font-medium text-[#a4553f] underline underline-offset-4 disabled:opacity-50"
-                                                    >
-                                                        Remove
-                                                    </button>
-                                                )}
-                                            </div>
-
-                                            {imageUploadError && (
-                                                <p
-                                                    role="alert"
-                                                    className="mt-3 text-xs text-[#a4553f]"
+                                <div className="border border-hairline bg-ivory/40 p-4">
+                                    <div className="flex items-center gap-4">
+                                        {imagePreview ? (
+                                            // eslint-disable-next-line @next/next/no-img-element
+                                            <img
+                                                src={imagePreview}
+                                                alt="Profile preview"
+                                                className="h-16 w-16 rounded-full border border-hairline object-cover"
+                                            />
+                                        ) : (
+                                            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-hairline bg-white text-ink-soft">
+                                                <svg
+                                                    aria-hidden="true"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    className="h-7 w-7"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.5"
                                                 >
-                                                    {imageUploadError}
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M20 21a8 8 0 0 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+                                                    />
+                                                </svg>
+                                            </div>
+                                        )}
+
+                                        <div className="min-w-0 flex-1">
+                                            <label
+                                                htmlFor="profile-image"
+                                                className="inline-flex cursor-pointer border border-hairline bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:border-champagne"
+                                            >
+                                                {imageFile
+                                                    ? "Change photo"
+                                                    : "Choose photo"}
+                                            </label>
+
+                                            <input
+                                                id="profile-image"
+                                                name="profile-image"
+                                                type="file"
+                                                accept="image/jpeg,image/jpg,image/png,image/webp"
+                                                onChange={handleImageChange}
+                                                disabled={
+                                                    isSubmitting ||
+                                                    isGoogleLoading
+                                                }
+                                                className="sr-only"
+                                            />
+
+                                            <p className="mt-2 text-sm text-ink-soft">
+                                                JPG, PNG or WebP · Max 5 MB
+                                            </p>
+
+                                            {imageFile && (
+                                                <p className="mt-1 truncate text-xs text-ink">
+                                                    {imageFile.name}
                                                 </p>
                                             )}
                                         </div>
+
+                                        {imageFile && (
+                                            <button
+                                                type="button"
+                                                onClick={removeImage}
+                                                disabled={
+                                                    isSubmitting ||
+                                                    isGoogleLoading
+                                                }
+                                                className="text-xs font-medium text-[#a4553f] underline underline-offset-4 disabled:opacity-50"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
                                     </div>
 
-                                    {/* Create Account */}
-                                    <button
-                                        type="submit"
-                                        disabled={isSubmitting || isGoogleLoading}
-                                        className="flex w-full items-center justify-center gap-3 bg-ink px-6 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-ivory transition-colors duration-300 hover:bg-champagne hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-                                    >
-                                        {isSubmitting && (
-                                            <span
-                                                aria-hidden="true"
-                                                className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
-                                            />
-                                        )}
-
-                                        {isUploading
-                                            ? "Uploading image..."
-                                            : isSubmitting
-                                              ? "Creating account..."
-                                              : "Create account"}
-                                    </button>
-                                </form>
-
-                                {/* Divider */}
-                                <div className="my-7 flex items-center gap-4">
-                                    <div className="h-px flex-1 bg-hairline" />
-                                    <span className="text-[11px] uppercase tracking-[0.2em] text-ink-soft">
-                                        Or continue with
-                                    </span>
-                                    <div className="h-px flex-1 bg-hairline" />
-                                </div>
-
-                                {/* Google Sign Up */}
-                                <button
-                                    type="button"
-                                    onClick={handleGoogleSignUp}
-                                    disabled={isSubmitting || isGoogleLoading}
-                                    className="flex w-full items-center justify-center gap-3 border border-hairline bg-white px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:border-champagne hover:bg-ivory/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-                                >
-                                    {isGoogleLoading ? (
-                                        <span
-                                            aria-hidden="true"
-                                            className="h-4 w-4 animate-spin rounded-full border-2 border-ink border-t-transparent"
-                                        />
-                                    ) : (
-                                        <svg
-                                            aria-hidden="true"
-                                            viewBox="0 0 48 48"
-                                            className="h-5 w-5"
+                                    {imageUploadError && (
+                                        <p
+                                            role="alert"
+                                            className="mt-3 text-xs text-[#a4553f]"
                                         >
-                                            <path
-                                                fill="#EA4335"
-                                                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-                                            />
-                                            <path
-                                                fill="#4285F4"
-                                                d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.74 7.18l7.26 5.64c4.24-3.92 7.52-9.72 7.52-17.29z"
-                                            />
-                                            <path
-                                                fill="#FBBC05"
-                                                d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.6.28-3.14.78-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.56 2.56 10.78l7.97-6.19z"
-                                            />
-                                            <path
-                                                fill="#34A853"
-                                                d="M24 48c6.48 0 11.92-2.13 15.9-6.16l-7.26-5.64c-2.01 1.35-4.6 2.15-8.64 2.15-6.26 0-11.57-4.22-13.47-9.91l-7.97 6.19C6.51 42.62 14.62 48 24 48z"
-                                            />
-                                        </svg>
+                                            {imageUploadError}
+                                        </p>
                                     )}
-
-                                    {isGoogleLoading
-                                        ? "Connecting to Google..."
-                                        : "Continue with Google"}
-                                </button>
-
-                                {/* Sign In Link */}
-                                <p className="mt-8 text-center text-base text-ink-soft">
-                                    Already have an account?{" "}
-                                    <Link
-                                        href={authRoutes.signIn}
-                                        className="font-semibold text-ink underline decoration-champagne decoration-2 underline-offset-4 transition-colors hover:text-champagne"
-                                    >
-                                        Sign in
-                                    </Link>
-                                </p>
-
-                                <div className="mt-10 border-t border-hairline pt-6 text-center">
-                                    <p className="text-[11px] uppercase tracking-[0.2em] text-ink-soft/70">
-                                        Thoughtfully planned. Beautifully
-                                        celebrated.
-                                    </p>
                                 </div>
-                            </>
-                        )}
+                            </div>
+
+                            {/* Create Account */}
+                            <button
+                                type="submit"
+                                disabled={isSubmitting || isGoogleLoading}
+                                className="flex w-full items-center justify-center gap-3 bg-ink px-6 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-ivory transition-colors duration-300 hover:bg-champagne hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                            >
+                                {isSubmitting && (
+                                    <span
+                                        aria-hidden="true"
+                                        className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+                                    />
+                                )}
+
+                                {isUploading
+                                    ? "Uploading image..."
+                                    : isSubmitting
+                                      ? "Creating account..."
+                                      : "Create account"}
+                            </button>
+                        </form>
+
+                        {/* Divider */}
+                        <div className="my-7 flex items-center gap-4">
+                            <div className="h-px flex-1 bg-hairline" />
+                            <span className="text-[11px] uppercase tracking-[0.2em] text-ink-soft">
+                                Or continue with
+                            </span>
+                            <div className="h-px flex-1 bg-hairline" />
+                        </div>
+
+                        {/* Google Sign Up */}
+                        <button
+                            type="button"
+                            onClick={handleGoogleSignUp}
+                            disabled={isSubmitting || isGoogleLoading}
+                            className="flex w-full items-center justify-center gap-3 border border-hairline bg-white px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:border-champagne hover:bg-ivory/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                            {isGoogleLoading ? (
+                                <span
+                                    aria-hidden="true"
+                                    className="h-4 w-4 animate-spin rounded-full border-2 border-ink border-t-transparent"
+                                />
+                            ) : (
+                                <svg
+                                    aria-hidden="true"
+                                    viewBox="0 0 48 48"
+                                    className="h-5 w-5"
+                                >
+                                    <path
+                                        fill="#EA4335"
+                                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                                    />
+                                    <path
+                                        fill="#4285F4"
+                                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.74 7.18l7.26 5.64c4.24-3.92 7.52-9.72 7.52-17.29z"
+                                    />
+                                    <path
+                                        fill="#FBBC05"
+                                        d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.6.28-3.14.78-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.56 2.56 10.78l7.97-6.19z"
+                                    />
+                                    <path
+                                        fill="#34A853"
+                                        d="M24 48c6.48 0 11.92-2.13 15.9-6.16l-7.26-5.64c-2.01 1.35-4.6 2.15-8.64 2.15-6.26 0-11.57-4.22-13.47-9.91l-7.97 6.19C6.51 42.62 14.62 48 24 48z"
+                                    />
+                                </svg>
+                            )}
+
+                            {isGoogleLoading
+                                ? "Connecting to Google..."
+                                : "Continue with Google"}
+                        </button>
+
+                        {/* Sign In Link */}
+                        <p className="mt-8 text-center text-base text-ink-soft">
+                            Already have an account?{" "}
+                            <Link
+                                href={authRoutes.signIn}
+                                className="font-semibold text-ink underline decoration-champagne decoration-2 underline-offset-4 transition-colors hover:text-champagne"
+                            >
+                                Sign in
+                            </Link>
+                        </p>
+
+                        <div className="mt-10 border-t border-hairline pt-6 text-center">
+                            <p className="text-[11px] uppercase tracking-[0.2em] text-ink-soft/70">
+                                Thoughtfully planned. Beautifully celebrated.
+                            </p>
+                        </div>
                     </div>
                 </section>
             </div>
