@@ -14,7 +14,7 @@ export default function FeaturedServices() {
             <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-8 md:py-20 lg:px-10 lg:py-24">
                 <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-10">
                     <div className="max-w-xl">
-                        <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-champagne">
+                        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-champagne">
                             Featured services
                         </p>
                         <h2
@@ -31,7 +31,7 @@ export default function FeaturedServices() {
 
                     <Link
                         href="/services"
-                        className="group inline-flex shrink-0 items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:text-champagne"
+                        className="group inline-flex shrink-0 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:text-champagne"
                     >
                         View all services
                         <ArrowIcon />
@@ -60,7 +60,7 @@ async function FeaturedServicesGrid() {
                 action={
                     <Link
                         href="/services"
-                        className="inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
+                        className="inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
                     >
                         Browse all services
                     </Link>
@@ -78,7 +78,7 @@ async function FeaturedServicesGrid() {
                 action={
                     <Link
                         href="/services"
-                        className="inline-flex h-11 items-center justify-center rounded-full border border-hairline px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:border-champagne hover:text-champagne"
+                        className="inline-flex h-11 items-center justify-center rounded-full border border-hairline px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:border-champagne hover:text-champagne"
                     >
                         Browse all services
                     </Link>
@@ -96,7 +96,7 @@ async function FeaturedServicesGrid() {
                 action={
                     <Link
                         href="/services"
-                        className="inline-flex h-11 items-center justify-center rounded-full border border-hairline px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:border-champagne hover:text-champagne"
+                        className="inline-flex h-11 items-center justify-center rounded-full border border-hairline px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:border-champagne hover:text-champagne"
                     >
                         Browse all services
                     </Link>

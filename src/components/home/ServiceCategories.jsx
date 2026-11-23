@@ -50,7 +50,7 @@ export default function ServiceCategories() {
             <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-8 md:py-20 lg:px-10 lg:py-24">
                 <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-10">
                     <div className="max-w-xl">
-                        <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-champagne">
+                        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-champagne">
                             Browse by category
                         </p>
                         <h2
@@ -66,7 +66,7 @@ export default function ServiceCategories() {
 
                     <Link
                         href="/services"
-                        className="group inline-flex shrink-0 items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:text-champagne"
+                        className="group inline-flex shrink-0 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:text-champagne"
                     >
                         View all services
                         <ArrowIcon />
@@ -94,7 +94,7 @@ export default function ServiceCategories() {
                                     <span className="block font-display text-[21px] leading-snug text-ink">
                                         {category.name}
                                     </span>
-                                    <span className="mt-1 block text-[13px] leading-relaxed text-muted">
+                                    <span className="mt-1 block text-[14px] leading-relaxed text-muted">
                                         {category.description}
                                     </span>
                                 </span>

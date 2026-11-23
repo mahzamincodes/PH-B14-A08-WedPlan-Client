@@ -34,7 +34,7 @@ export default async function BrowseServicesPage({ searchParams }) {
             <section className="border-b border-hairline bg-white/40">
                 <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
                     <Reveal>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-champagne">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-champagne">
                             Find your perfect match
                         </p>
 
@@ -60,7 +60,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                     <div className="lg:col-span-2">
                         <label
                             htmlFor="search"
-                            className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-ink-soft"
+                            className="mb-2 block text-[11px] font-semibold uppercase tracking-widest text-ink-soft"
                         >
                             Search services
                         </label>
@@ -71,14 +71,14 @@ export default async function BrowseServicesPage({ searchParams }) {
                             name="search"
                             defaultValue={filters.search}
                             placeholder="Search by service name..."
-                            className="w-full rounded-lg border border-hairline bg-white px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-champagne"
+                            className="w-full rounded-lg border border-hairline bg-white px-4 py-3 text-base text-ink outline-none transition-colors focus:border-champagne"
                         />
                     </div>
 
                     <div>
                         <label
                             htmlFor="category"
-                            className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-ink-soft"
+                            className="mb-2 block text-[11px] font-semibold uppercase tracking-widest text-ink-soft"
                         >
                             Category
                         </label>
@@ -87,7 +87,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                             id="category"
                             name="category"
                             defaultValue={filters.category}
-                            className="w-full rounded-lg border border-hairline bg-white px-4 py-3 text-sm text-ink outline-none focus:border-champagne"
+                            className="w-full rounded-lg border border-hairline bg-white px-4 py-3 text-base text-ink outline-none focus:border-champagne"
                         >
                             <option value="">All Categories</option>
 
@@ -102,7 +102,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                     <div>
                         <label
                             htmlFor="location"
-                            className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-ink-soft"
+                            className="mb-2 block text-[11px] font-semibold uppercase tracking-widest text-ink-soft"
                         >
                             Location
                         </label>
@@ -113,7 +113,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                             name="location"
                             defaultValue={filters.location}
                             placeholder="Enter location..."
-                            className="w-full rounded-lg border border-hairline bg-white px-4 py-3 text-sm text-ink outline-none focus:border-champagne"
+                            className="w-full rounded-lg border border-hairline bg-white px-4 py-3 text-base text-ink outline-none focus:border-champagne"
                         />
                     </div>
 
@@ -121,7 +121,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                         <div>
                             <label
                                 htmlFor="sort"
-                                className="mr-3 text-[10px] font-semibold uppercase tracking-widest text-ink-soft"
+                                className="mr-3 text-[11px] font-semibold uppercase tracking-widest text-ink-soft"
                             >
                                 Sort by price
                             </label>
@@ -130,7 +130,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                                 id="sort"
                                 name="sort"
                                 defaultValue={filters.sort}
-                                className="rounded-lg border border-hairline bg-white px-3 py-2 text-sm text-ink outline-none focus:border-champagne"
+                                className="rounded-lg border border-hairline bg-white px-3 py-2 text-base text-ink outline-none focus:border-champagne"
                             >
                                 <option value="">Newest</option>
                                 <option value="asc">Price: Low to High</option>
@@ -148,7 +148,7 @@ export default async function BrowseServicesPage({ searchParams }) {
 
                             <button
                                 type="submit"
-                                className="rounded-full bg-ink px-7 py-3 text-[10px] font-semibold uppercase tracking-widest text-white transition-colors hover:bg-champagne"
+                                className="rounded-full bg-ink px-7 py-3 text-[11px] font-semibold uppercase tracking-widest text-white transition-colors hover:bg-champagne"
                             >
                                 Apply Filters
                             </button>
@@ -157,7 +157,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                 </form>
 
                 <div className="max-w-xl">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-champagne">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-champagne">
                         Our Collection
                     </p>
 
@@ -168,7 +168,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                         Wedding Services
                     </h2>
 
-                    <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
+                    <p className="mt-4 text-[16px] leading-relaxed text-ink-soft">
                         {result.status === SERVICE_DATA_STATUS.OK
                             ? `${services.length} services found`
                             : "Services unavailable"}
@@ -181,7 +181,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                             Unable to load services
                         </h3>
 
-                        <p className="mx-auto mt-2 max-w-[46ch] text-[13px] leading-relaxed text-muted">
+                        <p className="mx-auto mt-2 max-w-[46ch] text-[14px] leading-relaxed text-muted">
                             Something went wrong while loading services.
                             Please try again.
                         </p>
@@ -192,7 +192,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                             No services found
                         </h3>
 
-                        <p className="mx-auto mt-2 max-w-[46ch] text-[13px] leading-relaxed text-muted">
+                        <p className="mx-auto mt-2 max-w-[46ch] text-[14px] leading-relaxed text-muted">
                             We couldnt find any services matching your
                             search. Try changing your filters or explore
                             all available categories.
@@ -200,7 +200,7 @@ export default async function BrowseServicesPage({ searchParams }) {
 
                         <Link
                             href="/services"
-                            className="mt-7 inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
+                            className="mt-7 inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
                         >
                             View All Services
                         </Link>

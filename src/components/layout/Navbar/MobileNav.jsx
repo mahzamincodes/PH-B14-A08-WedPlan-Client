@@ -129,7 +129,7 @@ export default function MobileNav({
                 </div>
 
                 <div className="flex-1 overflow-y-auto overscroll-contain px-5 pb-8 pt-7">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-muted">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-muted">
                         Menu
                     </p>
 
@@ -147,7 +147,7 @@ export default function MobileNav({
                                             className="group flex items-center justify-between gap-4 border-b border-hairline py-5"
                                         >
                                             <span className="flex items-baseline gap-4">
-                                                <span className="text-[10px] font-medium tracking-[0.2em] text-champagne">
+                                                <span className="text-[11px] font-medium tracking-[0.2em] text-champagne">
                                                     0{index + 1}
                                                 </span>
                                                 <span
@@ -183,7 +183,7 @@ export default function MobileNav({
                                     <p className="truncate font-display text-xl leading-tight text-ink">
                                         {displayName}
                                     </p>
-                                    <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted">
+                                    <p className="mt-1 text-[11px] uppercase tracking-[0.2em] text-muted">
                                         Signed in
                                     </p>
                                 </div>
@@ -212,7 +212,7 @@ export default function MobileNav({
                                 type="button"
                                 onClick={() => onSignOut({ restoreFocus: true })}
                                 disabled={isSigningOut}
-                                className="flex w-full items-center justify-center rounded-full border border-hairline px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#a4553f] transition-colors duration-200 hover:border-[#a4553f]/40 hover:bg-[#f6e8e2] disabled:cursor-not-allowed disabled:opacity-60"
+                                className="flex w-full items-center justify-center rounded-full border border-hairline px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#a4553f] transition-colors duration-200 hover:border-[#a4553f]/40 hover:bg-[#f6e8e2] disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 {isSigningOut ? "Signing out…" : "Logout"}
                             </button>
@@ -222,14 +222,14 @@ export default function MobileNav({
                             <Link
                                 href={authRoutes.signIn}
                                 onClick={() => onClose(false)}
-                                className="flex w-full items-center justify-center rounded-full border border-ink/15 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:border-champagne hover:text-champagne"
+                                className="flex w-full items-center justify-center rounded-full border border-ink/15 px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:border-champagne hover:text-champagne"
                             >
                                 Sign In
                             </Link>
                             <Link
                                 href={authRoutes.signUp}
                                 onClick={() => onClose(false)}
-                                className="flex w-full items-center justify-center rounded-full bg-ink px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
+                                className="flex w-full items-center justify-center rounded-full bg-ink px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
                             >
                                 Sign Up
                             </Link>

@@ -32,7 +32,7 @@ export default function WhyChooseWedPlan() {
         >
             <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-8 md:py-20 lg:px-10 lg:py-24">
                 <div className="max-w-2xl">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-champagne">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-champagne">
                         Why choose WedPlan
                     </p>
                     <h2
@@ -61,7 +61,7 @@ export default function WhyChooseWedPlan() {
                                 <h3 className="mt-4 font-display text-[22px] leading-snug text-ink">
                                     {reason.title}
                                 </h3>
-                                <p className="mt-2 text-[13px] leading-relaxed text-muted">
+                                <p className="mt-2 text-[14px] leading-relaxed text-muted">
                                     {reason.description}
                                 </p>
                             </div>

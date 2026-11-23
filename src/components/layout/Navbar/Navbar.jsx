@@ -22,7 +22,7 @@ function NavLink({ item, isActive }) {
         <Link
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            className={`group relative inline-flex items-center py-2 text-[11px] font-medium uppercase tracking-[0.2em] transition-colors duration-200 ${
+            className={`group relative inline-flex items-center py-2 text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-200 ${
                 isActive ? "text-ink" : "text-ink-soft/75 hover:text-ink"
             }`}
         >
@@ -171,7 +171,7 @@ export default function Navbar() {
 
                                     <Link
                                         href={authRoutes.signUp}
-                                        className="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
+                                        className="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
                                     >
                                         Sign Up
                                     </Link>

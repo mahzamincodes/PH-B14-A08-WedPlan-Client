@@ -90,7 +90,7 @@ export default function UserMenu({ user, isSigningOut, onSignOut }) {
                         <p className="truncate font-display text-lg leading-snug text-ink">
                             {displayName}
                         </p>
-                        <p className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted">
+                        <p className="mt-0.5 text-[11px] uppercase tracking-[0.2em] text-muted">
                             Signed in
                         </p>
                     </div>

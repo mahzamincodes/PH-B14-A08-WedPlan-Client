@@ -150,7 +150,7 @@ export default function ProfileSettingsForm({ user }) {
                     <h2 className="text-xl font-semibold text-[#29251f]">
                         {user.name || "User"}
                     </h2>
-                    <p className="mt-1 text-sm text-[#77716a]">{user.email}</p>
+                    <p className="mt-1 text-base text-[#77716a]">{user.email}</p>
                     <span className="mt-3 inline-flex rounded-full bg-[#f4eee6] px-3 py-1 text-xs font-medium text-[#967047]">
                         {user.role || "Customer"}
                     </span>
@@ -172,7 +172,7 @@ export default function ProfileSettingsForm({ user }) {
                     <h3 className="text-lg font-semibold text-[#29251f]">
                         Personal Information
                     </h3>
-                    <p className="mt-1 text-sm text-[#888078]">
+                    <p className="mt-1 text-base text-[#888078]">
                         {isEditing
                             ? "Update your profile information below."
                             : "Your account information and personal details."}
@@ -182,16 +182,16 @@ export default function ProfileSettingsForm({ user }) {
                 {isEditing ? (
                     <form onSubmit={handleSubmit}>
                         <div className="mb-6">
-                            <label className="mb-2 block text-sm font-medium text-[#77716a]">
+                            <label className="mb-2 block text-base font-medium text-[#77716a]">
                                 Profile Image
                             </label>
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageChange}
-                                className="block w-full rounded-lg border border-[#e9e2d9] p-3 text-sm text-[#55504a] file:mr-4 file:rounded-md file:border-0 file:bg-[#f4eee6] file:px-4 file:py-2 file:text-sm file:font-medium file:text-[#725337]"
+                                className="block w-full rounded-lg border border-[#e9e2d9] p-3 text-base text-[#55504a] file:mr-4 file:rounded-md file:border-0 file:bg-[#f4eee6] file:px-4 file:py-2 file:text-sm file:font-medium file:text-[#725337]"
                             />
-                            <p className="mt-2 text-xs text-[#99918a]">
+                            <p className="mt-2 text-sm text-[#99918a]">
                                 Maximum image size: 5MB.
                             </p>
                         </div>
@@ -200,7 +200,7 @@ export default function ProfileSettingsForm({ user }) {
                             <div>
                                 <label
                                     htmlFor="profile-name"
-                                    className="mb-2 block text-sm font-medium text-[#77716a]"
+                                    className="mb-2 block text-base font-medium text-[#77716a]"
                                 >
                                     Full Name
                                 </label>
@@ -213,7 +213,7 @@ export default function ProfileSettingsForm({ user }) {
                                     }
                                     maxLength={100}
                                     required
-                                    className="w-full rounded-lg border border-[#e9e2d9] px-4 py-3 text-sm outline-none focus:border-[#967047]"
+                                    className="w-full rounded-lg border border-[#e9e2d9] px-4 py-3 text-base outline-none focus:border-[#967047]"
                                 />
                             </div>
 
@@ -221,7 +221,7 @@ export default function ProfileSettingsForm({ user }) {
                                 <div>
                                     <label
                                         htmlFor="business-name"
-                                        className="mb-2 block text-sm font-medium text-[#77716a]"
+                                        className="mb-2 block text-base font-medium text-[#77716a]"
                                     >
                                         Business Name
                                     </label>
@@ -234,30 +234,30 @@ export default function ProfileSettingsForm({ user }) {
                                         }
                                         maxLength={100}
                                         required
-                                        className="w-full rounded-lg border border-[#e9e2d9] px-4 py-3 text-sm outline-none focus:border-[#967047]"
+                                        className="w-full rounded-lg border border-[#e9e2d9] px-4 py-3 text-base outline-none focus:border-[#967047]"
                                     />
                                 </div>
                             )}
 
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-[#77716a]">
+                                <label className="mb-2 block text-base font-medium text-[#77716a]">
                                     Email Address
                                 </label>
                                 <input
                                     value={user.email || ""}
                                     readOnly
-                                    className="w-full cursor-not-allowed rounded-lg border border-[#e9e2d9] bg-[#faf8f5] px-4 py-3 text-sm text-[#77716a]"
+                                    className="w-full cursor-not-allowed rounded-lg border border-[#e9e2d9] bg-[#faf8f5] px-4 py-3 text-base text-[#77716a]"
                                 />
                             </div>
 
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-[#77716a]">
+                                <label className="mb-2 block text-base font-medium text-[#77716a]">
                                     Account Role
                                 </label>
                                 <input
                                     value={user.role || "Customer"}
                                     readOnly
-                                    className="w-full cursor-not-allowed rounded-lg border border-[#e9e2d9] bg-[#faf8f5] px-4 py-3 text-sm text-[#77716a]"
+                                    className="w-full cursor-not-allowed rounded-lg border border-[#e9e2d9] bg-[#faf8f5] px-4 py-3 text-base text-[#77716a]"
                                 />
                             </div>
                         </div>

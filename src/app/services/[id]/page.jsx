@@ -68,7 +68,7 @@ export default async function ServiceDetailsPage({ params }) {
                         ← Back to Services
                     </Link>
 
-                    <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.25em] text-champagne">
+                    <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.25em] text-champagne">
                         {service.category || "Wedding Service"}
                     </p>
 
@@ -76,7 +76,7 @@ export default async function ServiceDetailsPage({ params }) {
                         {service.serviceName}
                     </h1>
 
-                    <p className="mt-4 text-sm text-ink-soft">
+                    <p className="mt-4 text-base text-ink-soft">
                         {service.location || "Location on request"}
                     </p>
                 </div>
@@ -115,7 +115,7 @@ export default async function ServiceDetailsPage({ params }) {
                     </div>
 
                     <div className="mt-10">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-champagne">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-champagne">
                             About This Service
                         </p>
 
@@ -123,14 +123,14 @@ export default async function ServiceDetailsPage({ params }) {
                             Service Description
                         </h2>
 
-                        <p className="mt-5 whitespace-pre-line text-sm leading-8 text-ink-soft">
+                        <p className="mt-5 whitespace-pre-line text-base leading-8 text-ink-soft">
                             {service.description ||
                                 "No description available."}
                         </p>
                     </div>
 
                     <div className="mt-10 rounded-2xl border border-hairline bg-white/60 p-6">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-champagne">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-champagne">
                             Service Provider
                         </p>
 
@@ -164,7 +164,7 @@ export default async function ServiceDetailsPage({ params }) {
                 </div>
 
                 <aside className="h-fit rounded-2xl border border-hairline bg-white/70 p-6 md:p-8">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-champagne">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-champagne">
                         Service Pricing
                     </p>
 
@@ -172,7 +172,7 @@ export default async function ServiceDetailsPage({ params }) {
                         {priceLabel}
                     </p>
 
-                    <p className="mt-2 text-xs text-ink-soft">
+                    <p className="mt-2 text-sm text-ink-soft">
                         Contact the vendor through a booking request.
                     </p>
 
@@ -186,14 +186,14 @@ export default async function ServiceDetailsPage({ params }) {
                                 Interested in this service?
                             </h2>
 
-                            <p className="mt-3 text-sm leading-7 text-ink-soft">
+                            <p className="mt-3 text-base leading-7 text-ink-soft">
                                 Sign in with your customer account to submit
                                 a booking request.
                             </p>
 
                             <Link
                                 href="/sign-in"
-                                className="mt-6 inline-flex w-full justify-center rounded-full bg-ink px-6 py-4 text-[10px] font-semibold uppercase tracking-widest text-white transition-colors hover:bg-champagne"
+                                className="mt-6 inline-flex w-full justify-center rounded-full bg-ink px-6 py-4 text-[11px] font-semibold uppercase tracking-widest text-white transition-colors hover:bg-champagne"
                             >
                                 Sign In to Book
                             </Link>
@@ -204,7 +204,7 @@ export default async function ServiceDetailsPage({ params }) {
                                 Booking Unavailable
                             </h2>
 
-                            <p className="mt-3 text-sm leading-7 text-ink-soft">
+                            <p className="mt-3 text-base leading-7 text-ink-soft">
                                 Only customers can submit booking requests.
                             </p>
                         </div>

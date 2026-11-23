@@ -42,7 +42,7 @@ export default function ServiceCard({ service }) {
                 />
 
                 {category?.name ? (
-                    <span className="absolute left-4 top-4 rounded-full bg-ivory/85 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-champagne backdrop-blur-sm">
+                    <span className="absolute left-4 top-4 rounded-full bg-ivory/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne backdrop-blur-sm">
                         {category.name}
                     </span>
                 ) : null}
@@ -53,7 +53,7 @@ export default function ServiceCard({ service }) {
                     {name || "Wedding service"}
                 </h3>
 
-                <dl className="mt-4 space-y-2 text-[13px] leading-relaxed text-ink-soft">
+                <dl className="mt-4 space-y-2 text-[14px] leading-relaxed text-ink-soft">
                     <div className="flex items-start gap-2">
                         <dt className="sr-only">Location</dt>
                         <PinIcon />
@@ -74,7 +74,7 @@ export default function ServiceCard({ service }) {
                         ) : (
                             <span
                                 aria-hidden="true"
-                                className="grid size-6 shrink-0 place-items-center rounded-full border border-champagne/40 text-[9px] font-semibold uppercase text-champagne"
+                                className="grid size-6 shrink-0 place-items-center rounded-full border border-champagne/40 text-[10px] font-semibold uppercase text-champagne"
                             >
                                 {vendorName ? vendorName.charAt(0) : "·"}
                             </span>
@@ -89,7 +89,7 @@ export default function ServiceCard({ service }) {
                 <div className="mt-auto pt-6">
                     <div className="flex items-end justify-between gap-4 border-t border-hairline pt-4">
                         <div>
-                            <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-muted">
+                            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
                                 Price
                             </p>
 
@@ -100,7 +100,7 @@ export default function ServiceCard({ service }) {
 
                         <Link
                             href={href}
-                            className="group/link inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:text-champagne"
+                            className="group/link inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:text-champagne"
                         >
                             View Details
                             <ArrowIcon />

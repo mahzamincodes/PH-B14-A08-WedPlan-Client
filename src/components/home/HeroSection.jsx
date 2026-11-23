@@ -11,7 +11,7 @@ export default function HeroSection() {
 
             <div className="relative mx-auto grid w-full max-w-7xl gap-12 px-5 py-14 md:px-8 md:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-10 lg:py-24">
                 <div className="max-w-xl">
-                    <p className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.28em] text-champagne">
+                    <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-champagne">
                         <span aria-hidden="true" className="h-px w-8 bg-champagne/50" />
                         Wedding planning, considered
                     </p>
@@ -33,7 +33,7 @@ export default function HeroSection() {
                     <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-7">
                         <Link
                             href="/services"
-                            className="group inline-flex h-12 items-center justify-center gap-3 rounded-full bg-ink px-7 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-300 hover:bg-champagne"
+                            className="group inline-flex h-12 items-center justify-center gap-3 rounded-full bg-ink px-7 text-xs font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-300 hover:bg-champagne"
                         >
                             Explore Wedding Services
                             <ArrowIcon />
@@ -41,7 +41,7 @@ export default function HeroSection() {
 
                         <Link
                             href="#featured-services"
-                            className="inline-flex h-12 items-center text-[11px] font-medium uppercase tracking-[0.18em] text-ink-soft transition-colors duration-200 hover:text-champagne"
+                            className="inline-flex h-12 items-center text-xs font-medium uppercase tracking-[0.18em] text-ink-soft transition-colors duration-200 hover:text-champagne"
                         >
                             Featured services
                         </Link>

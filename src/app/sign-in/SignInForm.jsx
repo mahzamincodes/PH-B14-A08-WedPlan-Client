@@ -265,7 +265,7 @@ export default function SignInForm() {
                             Made for moments that last forever.
                         </p>
 
-                        <p className="mt-3 text-[10px] uppercase tracking-[0.25em] text-champagne/80">
+                        <p className="mt-3 text-[11px] uppercase tracking-[0.25em] text-champagne/80">
                             Plan with confidence · Celebrate with joy
                         </p>
                     </div>
@@ -283,7 +283,7 @@ export default function SignInForm() {
                                 Sign in to your account
                             </h2>
 
-                            <p className="mt-3 text-sm leading-7 text-ink-soft">
+                            <p className="mt-3 text-base leading-7 text-ink-soft">
                                 Continue your wedding planning journey. Sign in
                                 to explore your WedPlan account.
                             </p>
@@ -298,7 +298,7 @@ export default function SignInForm() {
                             <div>
                                 <label
                                     htmlFor="email"
-                                    className="mb-2 block text-sm font-medium text-ink"
+                                    className="mb-2 block text-base font-medium text-ink"
                                 >
                                     Email address
                                 </label>
@@ -318,7 +318,7 @@ export default function SignInForm() {
                                     aria-describedby={
                                         errors.email ? "email-error" : undefined
                                     }
-                                    className={`w-full border bg-ivory/40 px-4 py-3.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-soft/50 focus:border-champagne focus:bg-white ${
+                                    className={`w-full border bg-ivory/40 px-4 py-3.5 text-base text-ink outline-none transition-colors placeholder:text-ink-soft/50 focus:border-champagne focus:bg-white ${
                                         errors.email
                                             ? "border-[#a4553f]"
                                             : "border-hairline"
@@ -329,7 +329,7 @@ export default function SignInForm() {
                                     <p
                                         id="email-error"
                                         role="alert"
-                                        className="mt-2 text-xs text-[#a4553f]"
+                                        className="mt-2 text-sm text-[#a4553f]"
                                     >
                                         {errors.email}
                                     </p>
@@ -340,7 +340,7 @@ export default function SignInForm() {
                             <div>
                                 <label
                                     htmlFor="password"
-                                    className="mb-2 block text-sm font-medium text-ink"
+                                    className="mb-2 block text-base font-medium text-ink"
                                 >
                                     Password
                                 </label>
@@ -366,7 +366,7 @@ export default function SignInForm() {
                                                 ? "password-error"
                                                 : undefined
                                         }
-                                        className={`w-full border bg-ivory/40 px-4 py-3.5 pr-12 text-sm text-ink outline-none transition-colors placeholder:text-ink-soft/50 focus:border-champagne focus:bg-white ${
+                                        className={`w-full border bg-ivory/40 px-4 py-3.5 pr-12 text-base text-ink outline-none transition-colors placeholder:text-ink-soft/50 focus:border-champagne focus:bg-white ${
                                             errors.password
                                                 ? "border-[#a4553f]"
                                                 : "border-hairline"
@@ -385,7 +385,7 @@ export default function SignInForm() {
                                     <p
                                         id="password-error"
                                         role="alert"
-                                        className="mt-2 text-xs text-[#a4553f]"
+                                        className="mt-2 text-sm text-[#a4553f]"
                                     >
                                         {errors.password}
                                     </p>
@@ -412,7 +412,7 @@ export default function SignInForm() {
                         {/* Divider */}
                         <div className="my-7 flex items-center gap-4">
                             <div className="h-px flex-1 bg-hairline" />
-                            <span className="text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+                            <span className="text-[11px] uppercase tracking-[0.2em] text-ink-soft">
                                 Or continue with
                             </span>
                             <div className="h-px flex-1 bg-hairline" />
@@ -472,7 +472,7 @@ export default function SignInForm() {
                         </p>
 
                         <div className="mt-10 border-t border-hairline pt-6 text-center">
-                            <p className="text-[10px] uppercase tracking-[0.2em] text-ink-soft/70">
+                            <p className="text-[11px] uppercase tracking-[0.2em] text-ink-soft/70">
                                 Thoughtfully planned. Beautifully celebrated.
                             </p>
                         </div>
