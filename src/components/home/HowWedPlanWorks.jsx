@@ -23,7 +23,7 @@ export default function HowWedPlanWorks() {
         <section
             id="how-it-works"
             aria-labelledby="how-it-works-heading"
-            className="scroll-mt-20 bg-ink text-ivory md:scroll-mt-24"
+            className="scroll-mt-20 bg-[#F7F2EB] md:scroll-mt-24"
         >
             <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-8 md:py-20 lg:px-10 lg:py-24">
                 <div className="max-w-2xl">
@@ -32,11 +32,11 @@ export default function HowWedPlanWorks() {
                     </p>
                     <h2
                         id="how-it-works-heading"
-                        className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.015em] text-ivory"
+                        className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.015em] text-ink"
                     >
                         Three steps, in your own time.
                     </h2>
-                    <p className="mt-4 max-w-[58ch] text-[15px] leading-relaxed text-ivory/70">
+                    <p className="mt-4 max-w-[58ch] text-[15px] leading-relaxed text-ink-soft">
                         Start with a category, then compare the services that suit your
                         day.
                     </p>
@@ -50,13 +50,13 @@ export default function HowWedPlanWorks() {
                                     aria-hidden="true"
                                     className="absolute -top-px left-0 h-px w-10 bg-champagne"
                                 />
-                                <p className="font-display text-[34px] leading-none text-champagne/80">
+                                <p className="font-display text-[34px] leading-none text-champagne">
                                     0{index + 1}
                                 </p>
-                                <h3 className="mt-4 font-display text-[22px] leading-snug text-ivory">
+                                <h3 className="mt-4 font-display text-[22px] leading-snug text-ink">
                                     {step.title}
                                 </h3>
-                                <p className="mt-2 text-[13px] leading-relaxed text-ivory/65">
+                                <p className="mt-2 text-[13px] leading-relaxed text-muted">
                                     {step.description}
                                 </p>
                             </div>

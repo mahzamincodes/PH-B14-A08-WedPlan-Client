@@ -51,7 +51,7 @@ export default async function BrowseServicesPage({ searchParams }) {
                 </div>
             </section>
 
-            <section className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+            <section className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20 lg:px-10 lg:py-24">
                 <form
                     action="/services"
                     method="GET"
@@ -156,18 +156,19 @@ export default async function BrowseServicesPage({ searchParams }) {
                     </div>
                 </form>
 
-                <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
-                    <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-champagne">
-                            Our Collection
-                        </p>
+                <div className="max-w-xl">
+                    <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-champagne">
+                        Our Collection
+                    </p>
 
-                        <h2 className="mt-2 font-display text-3xl text-ink">
-                            Wedding Services
-                        </h2>
-                    </div>
+                    <h2
+                        id="our-collection-heading"
+                        className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.015em] text-ink"
+                    >
+                        Wedding Services
+                    </h2>
 
-                    <p className="text-xs text-ink-soft">
+                    <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
                         {result.status === SERVICE_DATA_STATUS.OK
                             ? `${services.length} services found`
                             : "Services unavailable"}
@@ -175,23 +176,23 @@ export default async function BrowseServicesPage({ searchParams }) {
                 </div>
 
                 {result.status === SERVICE_DATA_STATUS.ERROR ? (
-                    <div className="rounded-2xl border border-hairline bg-white/70 px-6 py-16 text-center">
-                        <h3 className="font-display text-2xl text-ink">
+                    <div className="rounded-[20px] border border-hairline bg-white/50 px-6 py-12 text-center md:px-10 md:py-16">
+                        <h3 className="mt-5 font-display text-[24px] leading-snug text-ink">
                             Unable to load services
                         </h3>
 
-                        <p className="mt-3 text-sm text-ink-soft">
+                        <p className="mx-auto mt-2 max-w-[46ch] text-[13px] leading-relaxed text-muted">
                             Something went wrong while loading services.
                             Please try again.
                         </p>
                     </div>
                 ) : services.length === 0 ? (
-                    <div className="rounded-2xl border border-hairline bg-white/70 px-6 py-16 text-center">
-                        <h3 className="font-display text-2xl text-ink">
+                    <div className="rounded-[20px] border border-hairline bg-white/50 px-6 py-12 text-center md:px-10 md:py-16">
+                        <h3 className="mt-5 font-display text-[24px] leading-snug text-ink">
                             No services found
                         </h3>
 
-                        <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-ink-soft">
+                        <p className="mx-auto mt-2 max-w-[46ch] text-[13px] leading-relaxed text-muted">
                             We couldnt find any services matching your
                             search. Try changing your filters or explore
                             all available categories.
@@ -199,19 +200,19 @@ export default async function BrowseServicesPage({ searchParams }) {
 
                         <Link
                             href="/services"
-                            className="mt-6 inline-flex rounded-full bg-ink px-7 py-3 text-[10px] font-semibold uppercase tracking-widest text-white transition-colors hover:bg-champagne"
+                            className="mt-7 inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors duration-200 hover:bg-champagne"
                         >
                             View All Services
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <ul className="mt-10 lg:mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                         {services.map((service, index) => (
-                            <Reveal key={service.id || index}>
+                            <Reveal as="li" key={service.id || index} delay={index * 0.06} className="h-full">
                                 <ServiceCard service={service} />
                             </Reveal>
                         ))}
-                    </div>
+                    </ul>
                 )}
             </section>
         </main>

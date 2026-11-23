@@ -16,7 +16,7 @@ export default async function ProfileSettingsPage() {
     const user = session.user;
 
     return (
-        <main className="min-h-screen bg-slate-50 px-4 py-10">
+        <main className="min-h-screen bg-[#FAF8F5] px-4 py-10">
             <div className="mx-auto max-w-3xl">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-slate-900">

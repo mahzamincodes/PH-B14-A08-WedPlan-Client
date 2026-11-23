@@ -77,7 +77,10 @@ export default function ServiceCategories() {
                     {serviceCategories.map((category, index) => (
                         <Reveal as="li" key={category.slug} delay={index * 0.05} className="h-full">
                             <Link
-                                href={`/services?category=${category.slug}`}
+                                href={{
+                                    pathname: "/services",
+                                    query: { category: category.name },
+                                }}
                                 className="group flex h-full items-start gap-4 rounded-2xl border border-hairline bg-ivory/70 p-5 transition-colors duration-300 hover:border-champagne/45 hover:bg-ivory"
                             >
                                 <span

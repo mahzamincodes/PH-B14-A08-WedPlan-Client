@@ -4,8 +4,6 @@ import Link from "next/link";
 const navigationLinks = [
     { label: "Home", href: "/" },
     { label: "Browse Services", href: "/services" },
-    { label: "Sign In", href: "/sign-in" },
-    { label: "Sign Up", href: "/sign-up" },
 ];
 
 export default function Footer() {
@@ -73,18 +71,6 @@ export default function Footer() {
                             ))}
                         </ul>
                     </div>
-
-
-
-
-
-                    <h1>19</h1>
-                    <h1>20</h1>
-
-
-
-
-
 
                     {/* Contact Information */}
                     <div>
